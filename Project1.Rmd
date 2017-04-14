@@ -1,0 +1,26 @@
+---
+title: "Data Products: Course Project 1: R Markdown and Leaflet"
+author: "Yogesh Saletore"
+date: "April 14, 2017"
+output: html_document
+keep_md: true
+---
+# Places to Eat in Boston Area
+```{r, echo = TRUE, cache = TRUE}
+library(leaflet)
+library(jsonlite)
+
+boston <- fromJSON('https://data.cityofboston.gov/resource/fdxy-gydq.json', flatten = TRUE)
+boston = boston[boston$licstatus == "Active",]
+boston = boston[,c("address", "businessname", "city", "dayphn", "location.coordinates")]
+```
+April 14, 2017
+
+```{r, echo = TRUE, cache = TRUE}
+boston$lng = sapply(boston$location.coordinates, function(X) { as.numeric(strsplit(as.character(X), ",")[1]) })
+boston$lat = sapply(boston$location.coordinates, function(X) { as.numeric(strsplit(as.character(X), " ")[2]) })
+boston = boston[boston$lat != 0 | boston$lng != 0,]
+boston$label = paste(boston$businessname, boston$address, boston$city, boston$dayphn, sep = "<br>")
+
+leaflet(boston) %>% addTiles() %>% addMarkers(popup = boston$label)
+```
