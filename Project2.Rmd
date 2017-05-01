@@ -1,0 +1,27 @@
+---
+title: "Data Products: R Markdown and Plotly"
+author: "Yogesh Saletore"
+date: "April 20, 2017"
+output: ioslides_presentation
+keep_md: true
+---
+## R Code
+library(plotly)
+library(ggplot2)
+
+plot <- mtcars %>%
+	plot_ly(
+		x = ~hp, 
+		y = ~qsec, 
+		z = ~wt, 
+		color = ~cyl
+	)
+	
+## Plot of mtcars
+```{r, warning = FALSE, message = FALSE, echo = FALSE}
+library(plotly)
+
+
+mtcars %>%
+	plot_ly(x = ~hp, y = ~qsec, z = ~wt, color = ~cyl)
+```
